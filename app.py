@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 
-client = MongoClient('mongodb+srv://sparta:test@cluster0.lzwl4ms.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://sparta:test@cluster0.a0mnxnt.mongodb.net/?retryWrites=true&w=majority')
 
 db = client.dbsparta
 application = app = Flask(__name__)
