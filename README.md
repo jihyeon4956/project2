@@ -13,3 +13,8 @@
 # join.html
 - 기본적인 뼈대만 구성.
 - css 는 입혀야 됨.
+
+설치파일
+$ python -m venv venv
+$ pip install flask pymongo dnspython 
+

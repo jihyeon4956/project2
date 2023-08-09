@@ -20,9 +20,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap"
         rel="stylesheet" />
 
-    <style>
-
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var flashMessage = "{{ get_flashed_messages() | join('\n') }}";
@@ -33,10 +30,154 @@
         });
     </script>
 
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ebecf0;
+            overflow: hidden;
+        }
+
+        .container {
+            border-radius: 10px;
+            box-shadow: -5px -5px 10px #fff, 5px 5px 10px #babebc;
+            position: absolute;
+            width: 780px;
+            min-height: 500px;
+            overflow: hidden;
+        }
+
+        form {
+            background: #ebecf0;
+            display: flex;
+            flex-direction: column;
+            padding: 0 50px;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input_group>input { 
+            background: #eee;
+            padding: 7px;
+            margin: 8px 0;
+            width: 100%;
+            border: 0;
+            outline: none;
+            border-radius: 20px;
+            box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+        }
+
+        button {
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 15px 45px;
+            margin: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 80ms ease-in;
+        }
+
+        .form_btn {
+            box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
+        }
+
+        .form_btn:active {
+            box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
+        }
+
+        .overlay_btn {
+            background-color: #38393a;
+            color: #fff;
+            box-shadow: -5px -5px 10px #d3d4d5, 5px 5px 8px #d3d4d5;
+        }
+
+        .sign-up-container {
+            position: absolute;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            transition: all 0.5s;
+        }
+
+        .overlay-right {
+            display: flex;
+            flex-direction: column;
+            padding: 0 50px;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #38393a;
+            color: #fff;
+            transition: all 0.5s;
+        }
+
+        .container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .container.right-panel-active .overlay-right {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .container.right-panel-active .overlay-left {
+            transform: translateX(-100%);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        form h1 {
+            font-weight: bold;
+            margin: 0 0 10 0;
+            color: #000;
+        }
+
+        p {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin: 20px 0 30px;
+        }
+        .input_group {
+            margin-top: 20;
+        }
+        </style>
 </head>
 
 
 <body>
+
     <h1>회원가입</h1>
     <form method="post" action="/join">
         <label for="username">ID:</label>
@@ -46,6 +187,7 @@
         <input type="submit" value="Register">
 
     </form>
+
 </body>
 
 </html>
