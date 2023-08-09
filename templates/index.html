@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 버킷 아이템 목록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            show_all_buckets();
+        });
+
+        function show_all_buckets() {
+            fetch('/bucket')
+                .then(res => res.json())
+                .then(data => {
+                    let rows = data['result'];
+                    $('#bucket-list').empty();
+                    rows.forEach((a) => {
+                        let bucket = a['bucket'];
+                        let temp_html = `
+                                        <li class="list-group-item">
+                                            <span>${bucket}</span>
+                                            <i class="bi bi-hand-thumbs-up like-icon" data-id="${a['_id']}"></i>
+                                            <i class="bi bi-hand-thumbs-down dislike-icon" data-id="${a['_id']}"></i>
+                                            <span class="like-count">0</span>
+                                            <span class="dislike-count">0</span>
+                                        </li>`;
+                        $('#bucket-list').append(temp_html);
+                    });
+
+                    let likeClicked = false;
+                    let dislikeClicked = false;
+
+                    // 좋아요 아이콘 클릭 이벤트
+                    $('.like-icon').click(function () {
+                        if (dislikeClicked) {
+                            alert("중복 선택은 불가능합니다.");
+                            return;
+                        }
+                        likeClicked = !likeClicked;
+                        let likeCount = parseInt($(this).nextAll('.like-count').text());
+
+                        if (likeClicked) {
+                            $(this).removeClass('bi-hand-thumbs-up').addClass('bi-hand-thumbs-up-fill');
+                            $(this).nextAll('.like-count').text(likeCount + 1);
+                        } else {
+                            $(this).removeClass('bi-hand-thumbs-up-fill').addClass('bi-hand-thumbs-up');
+                            $(this).nextAll('.like-count').text(likeCount - 1);
+                        }
+                    });
+
+                    // 싫어요 아이콘 클릭 이벤트
+                    $('.dislike-icon').click(function () {
+                        if (likeClicked) {
+                            alert("중복 선택은 불가능합니다.");
+                            return;
+                        }
+                        dislikeClicked = !dislikeClicked;
+                        let dislikeCount = parseInt($(this).nextAll('.dislike-count').text());
+
+                        if (dislikeClicked) {
+                            $(this).removeClass('bi-hand-thumbs-down').addClass('bi-hand-thumbs-down-fill');
+                            $(this).nextAll('.dislike-count').text(dislikeCount + 1);
+                        } else {
+                            $(this).removeClass('bi-hand-thumbs-down-fill').addClass('bi-hand-thumbs-down');
+                            $(this).nextAll('.dislike-count').text(dislikeCount - 1);
+                        }
+                    });
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>전체 버킷 아이템 목록</h1>
+        <ul id="bucket-list" class="list-group mt-3"></ul>
+    </div>
+
+
+
+
+</body>
+
+</html>
+
+{% endblock %}

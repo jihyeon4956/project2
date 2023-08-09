@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            font-family: "Gowun Dodum", sans-serif;
+        }
+
+        .mypic {
+            width: 100%;
+            height: 200px;
+
+
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.5),
+                    rgba(0, 0, 0, 0.5)),
+                url("https://images.unsplash.com/photo-1601024445121-e5b82f020549?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80");
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic>h1 {
+            font-size: 30px;
+        }
+
+        .mybox {
+            width: 95%;
+            max-width: 700px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightblue;
+            margin: 20px auto;
+        }
+
+        .mybucket {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mybucket>input {
+            width: 70%;
+        }
+
+        .mybox>li {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+            min-height: 48px;
+        }
+
+        .mybox>li>h2 {
+            max-width: 75%;
+            font-size: 20px;
+            font-weight: 500;
+            margin-right: auto;
+            margin-bottom: 0px;
+        }
+
+        .mybox>li>h2.done {
+            text-decoration: line-through;
+            margin-bottom: 100px;
+        }
+    </style>
+    <script>
+        //  로딩안됨 확인필요함
+        // $(document).ready(function () {
+        //     winter();
+        // });
+
+        function winter() {
+            fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then(res => res.json()).then(data => {
+                let row = data['temp']
+                $('#temp_p').empty()
+
+                let ceil_2 = Math.ceil(row)
+                //test용 아래
+                //let ceil_2 = 10
+                console.log(ceil_2)
+                let row1 = ``
+                if (ceil_2 > 27) {
+                    row1 = `<div id="temp_p" class="fon">현재 날씨:<span id="temp">${ceil_2}</span>도</div>`
+                } else if (ceil_2 > 19) {
+                    row1 = `<div id="temp_p" class="fon_one">현재 날씨:<span id="temp">${ceil_2}</span>도</div>`
+                } else {
+                    row1 = `<<div id="temp_p" class="fon_two">현재 날씨:<span id="temp">${ceil_2}</span>도</div>`
+                } {
+
+                }
+                $('#temp').append(row1)
+            })
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="mypic">
+        <h1>제주바당</h1>
+        <div>현재 날씨:<span id="temp">20</span>도</div>
+    </div>
+
+    <ul class="nav justify-content-center">
+        <li class="nav-item" href="/">
+            <a class="nav-link active" aria-current="page" href="/">메인</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/writeAndMyview">내 방명록</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/writeAndMyview">글쓰기</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">전체글보기</a>
+        </li>
+
+        {% if username %}
+        <li class="nav-item">
+            <a class="nav-link" onclick="location.href='/logout'">로그아웃</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/login">로그인</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="/join">회원가입</a>
+        </li>
+    </ul>
+    <main role="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <br><br><br>
+    <!-- 하단 단순꾸미기 -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Creating &copy; Our Website 2023</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i
+                            class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-dark text-decoration-none me-3" href="#!">Made By</a>
+                    <a class="link-dark text-decoration-none" href="#!">항해 16기(2조)</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
