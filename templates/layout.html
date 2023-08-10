@@ -2,16 +2,26 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  
+
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+
     <style>
         * {
             font-family: "Gowun Dodum", sans-serif;
@@ -20,13 +30,17 @@
         .mypic {
             width: 100%;
             height: 200px;
+
+
             background-image: linear-gradient(0deg,
                     rgba(0, 0, 0, 0.5),
                     rgba(0, 0, 0, 0.5)),
-                url("https://images.unsplash.com/photo-1601024445121-e5b82f020549?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80");
+                url("https://t1.daumcdn.net/cfile/tistory/23242E3D53C5724928");
             background-position: center;
             background-size: cover;
+
             color: white;
+
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -61,6 +75,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
+
             margin-bottom: 10px;
             min-height: 48px;
         }
@@ -77,53 +92,36 @@
             text-decoration: line-through;
             margin-bottom: 100px;
         }
-
-        .fon {
-            color: black;
-            font-size: 15px;
-            font-weight: 500;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-between;
-            background-image: url('https://www.meteorologiaenred.com/wp-content/uploads/2015/05/verano-1024x755.jpg');
-            background-position: center;
-            background-size: 150px;
-            width: 150px;
-        }
-
-        .profile {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        
     </style>
     <script>
         //  로딩안됨 확인필요함
         $(document).ready(function () {
+          
             winter();
         });
+        
+
         function winter() {
             fetch("http://spartacodingclub.shop/sparta_api/weather/jeju").then(res => res.json()).then(data => {
                 let row = data['temp']
                 let icon = data['icon']
                 console.log(row, icon)
+                
                 $('#temp_p').empty()
+
                 let ceil_2 = Math.ceil(row)
                 //test용 아래
                 //let ceil_2 = 28
                 console.log(ceil_2)
-                let row1 = ``
+                  let row1 = ``
+
                 if (ceil_2 > 27) {
                     row1 = `<div class="mypic" id="temp_p">
                               <h1>제주바당</h1>
                               <div>현재 날씨:<span id="temp">${row}</span>도<img class="fit-picture" src="${icon}"alt="" /></div>
                             </div>`
+                                          
                 } else if (ceil_2 > 19) {
                     row1 = `<div class="mypic" id="temp_p">
                                 <h1>제주바당</h1>
@@ -134,18 +132,24 @@
                                 <h1>제주바당</h1>
                                 <div>현재 날씨:<span id="temp">${row}</span>도<img class="fit-picture" src="${icon}"alt="" /></div>
                               </div>`
-                }
+                } 
                 $('#temp_p').append(row1)
+               
             })
+
         }
+        
+
     </script>
 </head>
 
 <body>
+
     <div class="mypic" id="temp_p">
         <h1>제주바당</h1>
         <div>현재 날씨:<span id="temp">20</span>도</div>
     </div>
+
     <ul class="nav justify-content-center">
         <li class="nav-item" href="/">
             <a class="nav-link active" aria-current="page" href="/">메인</a>
@@ -153,9 +157,10 @@
         <li class="nav-item">
             <a class="nav-link" href="/writeAndMyview">내 방명록</a>
         </li>
-        {% if email %}
+
+        {% if id %}
         <li class="nav-item">
-            <a class="nav-link" style="cursor: pointer;" onclick="location.href='/logout'">로그아웃</a>
+            <a class="nav-link" onclick="location.href='/logout'">로그아웃</a>
         </li>
         {% else %}
         <li class="nav-item">
@@ -171,8 +176,7 @@
     </main>
 
     <br><br><br>
-
-    <!-- footer -->
+    <!-- 하단 단순꾸미기 -->
     <footer class="footer py-4">
         <div class="container">
             <div class="row align-items-center">
@@ -187,16 +191,9 @@
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <a class="link-dark text-decoration-none me-3" href="#!">Made By</a>
-                    <a class="link-dark text-decoration-none" href="#!">항해 16기(2조)</a>
+                    <a class="link-dark " href="/teamMember">항해 16기(2조)</a>
                 </div>
-
             </div>
-        </div>
-        <div class="profile">
-            <a>강권영 블로그: NONE Git: https://github.com/passbreaker1 주특기: React</a><br>
-            <a>김대욱 블로그: https://blog.naver.com/ackrima Git: https://github.com/totobon6125 주특기: Node.js</a><br>
-            <a>김석현 블로그: https://disosa.tistory.com/ Git: https://github.com/disosa 주특기: React</a><br>
-            <a>노지현 블로그: https://imcodiiing.tistory.com Git: https://github.com/jihyeon4956 주특기: Spring</a>
         </div>
     </footer>
 </body>

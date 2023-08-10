@@ -17,33 +17,35 @@
 
 
     <style>
-  /* 스크롤 가능한 컨테이너의 스타일 */
-  .list-container {
-        max-height: 400px; /* 최대 높이 설정 */
-        overflow-y: auto; /* 세로 스크롤 적용 */
-        border: 1px solid #ccc;
-    }
+        /* 스크롤 가능한 컨테이너의 스타일 */
+        .list-container {
+            max-height: 400px;
+            /* 최대 높이 설정 */
+            overflow-y: auto;
+            /* 세로 스크롤 적용 */
+            border: 1px solid #ccc;
+        }
 
-    /* 각 게시글 아이템의 스타일 */
-    .list-group-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 5px;
-    }
+        /* 각 게시글 아이템의 스타일 */
+        .list-group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
 
-       /* 좋아요, 싫어요 카운트 스타일 */
-       .like-count, .dislike-count {
-        width: 10%; /* 10% 차지하도록 설정 */
-    }
+        /* 좋아요, 싫어요 카운트 스타일 */
+        .like-count,
+        .dislike-count {
+            width: 10%;
+            /* 10% 차지하도록 설정 */
+        }
 
-    /* 게시글 제목 스타일 */
-    .list-group-item span {
-        width: 80%; /* 70% 차지하도록 설정 */
-    }
-
-
- 
+        /* 게시글 제목 스타일 */
+        .list-group-item span {
+            width: 80%;
+            /* 70% 차지하도록 설정 */
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -58,65 +60,88 @@
                     $('#bucket-list').empty();
                     rows.forEach((a) => {
                         let bucket = a['bucket'];
+                        let likeCount = a['likeCount'];
+                        let dislikeCount = a['dislikeCount'];
+
                         let temp_html = `
-                                        <li class="list-group-item">
-                                            <span>${bucket}</span>
-                                            <i class="bi bi-hand-thumbs-up like-icon" data-id="${a['_id']}" ></i>
-                                            <i class="bi bi-hand-thumbs-down dislike-icon" data-id="${a['_id']}"></i>
-                                            <span class="like-count"  style="width: 2%;" >0</span>
-                                            <span class="dislike-count"  style="width: 2%;" >0</span>
-                                        </li>`;
+                        <li class="list-group-item">
+                            <span>${bucket}</span>
+                            <i class="bi bi-hand-thumbs-up like-icon" data-id="${a['_id']}"></i>
+                            <i class="bi bi-hand-thumbs-down dislike-icon" data-id="${a['_id']}"></i>
+                            <span class="like-count" style="width: 2%;">${likeCount}</span>
+                            <span class="dislike-count" style="width: 2%;">${dislikeCount}</span>
+                        </li>`;
                         $('#bucket-list').append(temp_html);
-                    });
 
-                    
-                    let likeClicked = false;
-                    let dislikeClicked = false;
+                        let likeClicked = false;
+                        let dislikeClicked = false;
 
-                    // 좋아요 아이콘 클릭 이벤트
-                    $('.like-icon').click(function () {
-                        if (dislikeClicked) {
-                            alert("중복 선택은 불가능합니다.");
-                            return;
-                        }
-                        likeClicked = !likeClicked;
-                        let likeCount = parseInt($(this).nextAll('.like-count').text());
+                        $('.like-icon').click(function () {
+                            if (dislikeClicked) {
+                                alert("중복 선택은 불가능합니다.");
+                                return;
+                            }
+                            likeClicked = !likeClicked;
+                            let likeCountElement = $(this).nextAll('.like-count');
+                            let likeCount = parseInt(likeCountElement.text());
 
-                        if (likeClicked) {
-                            $(this).removeClass('bi-hand-thumbs-up').addClass('bi-hand-thumbs-up-fill');
-                            $(this).nextAll('.like-count').text(likeCount + 1);
-                        } else {
-                            $(this).removeClass('bi-hand-thumbs-up-fill').addClass('bi-hand-thumbs-up');
-                            $(this).nextAll('.like-count').text(likeCount - 1);
-                        }
-                    });
+                            if (likeClicked) {
+                                $(this).removeClass('bi-hand-thumbs-up').addClass('bi-hand-thumbs-up-fill');
+                                likeCountElement.text(likeCount + 1);
+                            } else {
+                                $(this).removeClass('bi-hand-thumbs-up-fill').addClass('bi-hand-thumbs-up');
+                                likeCountElement.text(likeCount - 1);
+                            }
 
-                    // 싫어요 아이콘 클릭 이벤트
-                    $('.dislike-icon').click(function () {
-                        if (likeClicked) {
-                            alert("중복 선택은 불가능합니다.");
-                            return;
-                        }
-                        dislikeClicked = !dislikeClicked;
-                        let dislikeCount = parseInt($(this).nextAll('.dislike-count').text());
+                            updateServer('likeCount', a['_id'], likeCountElement.text());
+                        });
 
-                        if (dislikeClicked) {
-                            $(this).removeClass('bi-hand-thumbs-down').addClass('bi-hand-thumbs-down-fill');
-                            $(this).nextAll('.dislike-count').text(dislikeCount + 1);
-                        } else {
-                            $(this).removeClass('bi-hand-thumbs-down-fill').addClass('bi-hand-thumbs-down');
-                            $(this).nextAll('.dislike-count').text(dislikeCount - 1);
+                        $('.dislike-icon').click(function () {
+                            if (likeClicked) {
+                                alert("중복 선택은 불가능합니다.");
+                                return;
+                            }
+                            dislikeClicked = !dislikeClicked;
+                            let dislikeCountElement = $(this).nextAll('.dislike-count');
+                            let dislikeCount = parseInt(dislikeCountElement.text());
+
+                            if (dislikeClicked) {
+                                $(this).removeClass('bi-hand-thumbs-down').addClass('bi-hand-thumbs-down-fill');
+                                dislikeCountElement.text(dislikeCount + 1);
+                            } else {
+                                $(this).removeClass('bi-hand-thumbs-down-fill').addClass('bi-hand-thumbs-down');
+                                dislikeCountElement.text(dislikeCount - 1);
+                            }
+
+                            updateServer('dislikeCount', a['_id'], dislikeCountElement.text());
+                        });
+
+                        function updateServer(type, itemId, count) {
+                            let formData = new FormData();
+                            formData.append('type', type);
+                            formData.append('itemId', itemId);
+                            formData.append('count', count);
+
+                            fetch('/update', {
+                                method: 'POST',
+                                body: formData
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data.msg);
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
                         }
                     });
                 });
         }
-
-        
     </script>
 </head>
 
 <body>
-      <div class="container mt-5">
+    <div class="container mt-5">
         <h1>전체 버킷 아이템 목록</h1>
         <div id="bucket-list-container" class="list-container mt-3">
             <ul id="bucket-list" class="list-group"></ul>

@@ -13,13 +13,8 @@ app.secret_key = 'any random string'
 
 # 홈화면
 @app.route('/')
-def index():
-    if 'email' in session:
-        email = session['email']
-        logged_in = True
-        return render_template('writeAndMyview.html', email=email, logged_in=logged_in)
-    else:
-        return render_template('index.html')
+def home():
+    return render_template('index.html')
 
 
 # 전체글 목록조회(list) 
@@ -29,16 +24,16 @@ def bucket_get():
     return jsonify({'result': all_buckets})
 
 
-# 좋아요, 싫어요 카운팅-미완성
+# 좋아요, 싫어요 카운팅-미완성-index.html 함께 변경중
 @app.route('/update', methods=['POST'])
 def update_like_dislike():
-    data = request.json
-    item_id = data['id']
-    like_count = data['likeCount']
-    dislike_count = data['dislikeCount']
+    item_id = request.form['itemId']
+    type = request.form['type']  # likeCount, dislikeCount로 전달됨
+    new_count = int(request.form['count'])  # 변경된 카운트 값
 
     # MongoDB의 해당 아이템 업데이트
-    db.bucket.update_one({'_id': ObjectId(item_id)}, {'$set': {'likeCount': like_count, 'dislikeCount': dislike_count}})
+    # $inc 연산자를 사용하여 변경된 값을 기존 값에 더함
+    db.bucket.update_one({'_id': ObjectId(item_id)}, {'$inc': {type: new_count}})
 
     return jsonify({'msg': '업데이트 완료!'})
 
@@ -46,10 +41,17 @@ def update_like_dislike():
 # 내 방명록 쓰기 및 보기페이지
 @app.route('/writeAndMyview')
 def write():
-    return render_template('writeAndMyview.html')
+    # return render_template('writeAndMyview.html')
+    if 'email' in session:
+        email = session['email']
+        logged_in = True
+        return render_template('writeAndMyview.html', email=email, logged_in=logged_in)
+    else:
+        return redirect(url_for('login'))
+
     # if 'id' in session:
-    #     id= session.get('id',None)
-    #     return render_template('writeAndMyview.html',id=id)
+    #     id= session.get('email',None)
+    #     return render_template('writeAndMyview.html',email=email, logged_in=logged_in)
     # return render_template('login.html')
 
 
