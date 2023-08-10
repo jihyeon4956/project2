@@ -17,9 +17,9 @@ def index():
     if 'email' in session:
         email = session['email']
         logged_in = True
-        return render_template('index.html', email=email, logged_in=logged_in)
+        return render_template('writeAndMyview.html', email=email, logged_in=logged_in)
     else:
-        return redirect(url_for('login'))
+        return render_template('index.html')
 
 
 # 전체글 목록조회(list) 
