@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조원 소개</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+
+    <style>
+        .box1{
+            float: left;
+        }
+        .box2{
+            float: left;
+        }
+        .box3{
+            float: left;
+        }
+        .box4{
+            float: left;
+        }
+        .warp{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        
+
+ 
+    </style>
+    <script>
+        $(document).ready(function () {
+            show_bucket();
+        });
+
+        function show_bucket() {
+            fetch("/bucket").then((res) => res.json()).then((data) => {
+                let rows = data["result"];
+                console.log(rows)
+                // $("#bucket-list").empty();
+
+                // rows.forEach((a) => {
+                //     let bucket = a["bucket"];
+                //     let num = a["num"];
+                //     let done = a["done"];
+                //     let temp_html = ``;
+
+                //     if (done === 0) {
+                //         temp_html = `<li>
+                //                         <h2>✅ ${bucket}</h2>
+                //                         <button onclick="showComplete(${num});" type="button" class="btn btn-outline-primary">완료?</button>
+                //                     </li>`;
+                //     } else {
+                //         temp_html = `<li>
+                //                         <h2>✅ ${bucket} 완료!!</h2>
+                //                     </li>`;
+                //     }
+                //     $("#bucket-list").append(temp_html);
+                // });
+            });
+        }
+
+        function save_bucket() {
+            let Name = $("#Name").val();
+            let blogadress = $("#blogadress").val();
+            let gitadress = $("#gitadress").val();
+            let skillName = $("#skillName").val();
+
+            let formData = new FormData();
+            formData.append("Name_give", Name);
+            formData.append("blogadress_give", blogadress);
+            formData.append("gitadress_give", gitadress);
+            formData.append("skillName_give", skillName);
+
+            fetch("/bucket", { method: "POST", body: formData }).then((response) => response.json()).then((data) => {
+                alert(data["msg"]);
+                window.location.reload();
+            });
+        }
+
+        
+    </script>
+</head>
+
+<body>
+      <!-- <div class="container mt-5"> -->
+        <h1>조원 소개</h1>
+        <!-- <div id="bucket-list-container" class="list-container mt-3"> -->
+            <!-- <ul id="bucket-list" class="list-group"></ul> -->
+        <div class ="warp" id="abcdef">
+            <div class="box1">
+                <label class="visually-hidden" for="specificSizeInputName"></label>
+                <input type="text" class="form-control" id="Name" placeholder="name">
+            </div>
+            <div class="input-group-text box1">@</div>
+            <div class="box2">
+                <input type="text" class="form-control" id="blogadress" placeholder="blogadress">
+            </div>
+
+            <div class="input-group-text box1">@</div>
+            <div class="box3">
+                <input type="text" class="form-control" id="gitadress" placeholder="gitadress">
+            </div>
+            <div class="box4">
+                <label class="visually-hidden" for="specificSizeInputName">이름</label>
+                <input type="text" class="form-control" id="skillName" placeholder="skill">
+            </div>
+            <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">
+                기록하기
+            </button>
+        </div>
+        
+            <!-- </div> -->
+        <!-- </div> -->
+    </div>
+
+
+
+
+</body>
+
+</html>
+
+{% endblock %}
